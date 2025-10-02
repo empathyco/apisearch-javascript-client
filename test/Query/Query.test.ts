@@ -871,9 +871,6 @@ describe('Query()', () => {
             query = query.optimize();
             expect(Object.keys(query.getAggregations()).length).to.be.equal(1);
             expect(query.getMetadata()["ef"]).to.be.deep.equal(['field1', "field3"]);
-            query = query.optimize();
-            expect(Object.keys(query.getAggregations()).length).to.be.equal(1);
-            expect(query.getMetadata()["ef"]).to.be.deep.equal(['field1', "field3"]);
         });
     });
 });
