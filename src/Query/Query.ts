@@ -1304,6 +1304,23 @@ export class Query {
         return this.queryOperator;
     }
 
+    public optimize(): any {
+        const extraFilters: string[] = [];
+        const otherAggregations: any = {};
+        Object.keys(this.aggregations).forEach((key) => {
+            if (this.aggregations[key].field.startsWith("indexed_metadata._")) {
+                extraFilters.push(this.aggregations[key].field.slice(18));
+            } else {
+                otherAggregations[key] = this.aggregations[key];
+            }
+        });
+
+        this.aggregations = otherAggregations;
+        this.metadata.ef = (this.metadata.ef ?? []).concat(extraFilters);
+
+        return this;
+    }
+
     /**
      * To array
      *

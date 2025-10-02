@@ -628,6 +628,7 @@ export declare class Query {
     getIndexUUID(): IndexUUID;
     setQueryOperator(queryOperator: string): Query;
     getQueryOperator(): string | null;
+    optimize(): any;
     /**
      * To array
      *
