@@ -160,7 +160,7 @@ export class HttpRepository extends Repository {
                 "get",
                 this.getCredentials(),
                 {
-                    query: JSON.stringify(query.toArray())
+                    query: JSON.stringify(query.optimize().toArray())
                         .replace(/&/g, "%26"),
                 },
                 {},
