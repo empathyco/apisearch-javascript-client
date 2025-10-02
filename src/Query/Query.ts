@@ -1318,7 +1318,7 @@ export class Query {
 
         copy.aggregations = otherAggregations;
         copy.metadata = copy.metadata ?? [];
-        copy.metadata.ef = (copy.metadata.ef ?? []).concat(extraFilters);
+        copy.metadata.ef = extraFilters;
 
         return Query.createFromArray(copy);
     }
