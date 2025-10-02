@@ -856,4 +856,24 @@ describe('Query()', () => {
             expect(query.toArray()["query_operator"]).to.be.undefined;
         });
     });
+
+    describe('-> Test extra filters', () => {
+        it("should properly optimize extra filters", () => {
+            let query = Query.createMatchAll().aggregateBy('field1', '_field1', 8);
+            query = query.optimize();
+            expect(query.getAggregations()).to.be.deep.equal({});
+            expect(query.getMetadata()["ef"]).to.be.deep.equal(['field1']);
+
+            query = Query.createMatchAll()
+                .aggregateBy('field1', '_field1', 8)
+                .aggregateBy('field2', 'field2', 8)
+                .aggregateBy('field3', '_field3', 8);
+            query = query.optimize();
+            expect(Object.keys(query.getAggregations()).length).to.be.equal(1);
+            expect(query.getMetadata()["ef"]).to.be.deep.equal(['field1', "field3"]);
+            query = query.optimize();
+            expect(Object.keys(query.getAggregations()).length).to.be.equal(1);
+            expect(query.getMetadata()["ef"]).to.be.deep.equal(['field1', "field3"]);
+        });
+    });
 });

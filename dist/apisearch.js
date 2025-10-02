@@ -6531,6 +6531,23 @@ var Query = /** @class */ (function () {
     Query.prototype.getQueryOperator = function () {
         return this.queryOperator;
     };
+    Query.prototype.optimize = function () {
+        var _this = this;
+        var _a;
+        var extraFilters = [];
+        var otherAggregations = {};
+        Object.keys(this.aggregations).forEach(function (key) {
+            if (_this.aggregations[key].field.startsWith("indexed_metadata._")) {
+                extraFilters.push(_this.aggregations[key].field.slice(18));
+            }
+            else {
+                otherAggregations[key] = _this.aggregations[key];
+            }
+        });
+        this.aggregations = otherAggregations;
+        this.metadata.ef = ((_a = this.metadata.ef) !== null && _a !== void 0 ? _a : []).concat(extraFilters);
+        return this;
+    };
     /**
      * To array
      *
