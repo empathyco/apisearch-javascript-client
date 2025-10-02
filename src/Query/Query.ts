@@ -1305,20 +1305,22 @@ export class Query {
     }
 
     public optimize(): any {
+        const copy = this.toArray();
         const extraFilters: string[] = [];
         const otherAggregations: any = {};
-        Object.keys(this.aggregations).forEach((key) => {
-            if (this.aggregations[key].field.startsWith("indexed_metadata._")) {
-                extraFilters.push(this.aggregations[key].field.slice(18));
+        Object.keys(copy.aggregations ?? {}).forEach((key) => {
+            if (copy.aggregations[key].field.startsWith("indexed_metadata._")) {
+                extraFilters.push(copy.aggregations[key].field.slice(18));
             } else {
-                otherAggregations[key] = this.aggregations[key];
+                otherAggregations[key] = copy.aggregations[key];
             }
         });
 
-        this.aggregations = otherAggregations;
-        this.metadata.ef = (this.metadata.ef ?? []).concat(extraFilters);
+        copy.aggregations = otherAggregations;
+        copy.metadata = copy.metadata ?? [];
+        copy.metadata.ef = (copy.metadata.ef ?? []).concat(extraFilters);
 
-        return this;
+        return Query.createFromArray(copy);
     }
 
     /**
