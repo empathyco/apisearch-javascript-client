@@ -873,4 +873,24 @@ describe('Query()', () => {
             expect(query.getMetadata()["ef"]).to.be.deep.equal(['field1', "field3"]);
         });
     });
+
+    describe('-> Test query + symbol treatment', () => {
+        it("Should replace symbol + with an empty character", () => {
+            let query = Query.create('a+b');
+            query = query.optimize();
+            expect(query.getQueryText()).to.be.equal('ab');
+
+            query = Query.create('a123');
+            query = query.optimize();
+            expect(query.getQueryText()).to.be.equal('a123');
+
+            query = Query.create('a1+++23');
+            query = query.optimize();
+            expect(query.getQueryText()).to.be.equal('a123');
+
+            query = Query.createMatchAll();
+            query = query.optimize();
+            expect(query.getQueryText()).to.be.equal("");
+        });
+    });
 });

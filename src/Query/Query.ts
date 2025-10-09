@@ -1320,6 +1320,10 @@ export class Query {
         copy.metadata = copy.metadata ?? [];
         copy.metadata.ef = extraFilters;
 
+        if (copy.q) {
+            copy.q = copy.q.replace(/\+/g, "");
+        }
+
         return Query.createFromArray(copy);
     }
 
