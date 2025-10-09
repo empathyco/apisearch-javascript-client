@@ -6550,6 +6550,14 @@ var Query = /** @class */ (function () {
         if (copy.q) {
             copy.q = copy.q.replace(/\+/g, "");
         }
+        if (copy.filters) {
+            for (var filterKey in copy.filters) {
+                var filter = copy.filters[filterKey];
+                copy.filters[filterKey].values = filter.values.map(function (value) {
+                    return value.replace(/\+/g, encodeURIComponent("+"));
+                });
+            }
+        }
         return Query.createFromArray(copy);
     };
     /**
