@@ -891,6 +891,10 @@ describe('Query()', () => {
             query = Query.createMatchAll();
             query = query.optimize();
             expect(query.getQueryText()).to.be.equal("");
+
+            query = Query.createMatchAll().filterBy('a', 'a', ['A+B']);
+            query = query.optimize();
+            expect(query.getFilter('a').getValues()[0]).to.be.equal("A%2BB");
         });
     });
 });

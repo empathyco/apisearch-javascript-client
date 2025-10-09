@@ -1324,6 +1324,15 @@ export class Query {
             copy.q = copy.q.replace(/\+/g, "");
         }
 
+        if (copy.filters) {
+            for (const filterKey in copy.filters) {
+                const filter = copy.filters[filterKey];
+                copy.filters[filterKey].values = filter.values.map((value) =>
+                    value.replace(/\+/g, encodeURIComponent("+"))
+                );
+            }
+        }
+
         return Query.createFromArray(copy);
     }
 
