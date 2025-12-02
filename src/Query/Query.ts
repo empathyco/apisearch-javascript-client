@@ -1328,7 +1328,9 @@ export class Query {
             for (const filterKey in copy.filters) {
                 const filter = copy.filters[filterKey];
                 copy.filters[filterKey].values = filter.values.map((value) =>
-                    value.replace(/\+/g, encodeURIComponent("+"))
+                    typeof value === "string"
+                        ? value.replace(/\+/g, encodeURIComponent("+"))
+                        : value,
                 );
             }
         }
