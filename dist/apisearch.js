@@ -6554,7 +6554,9 @@ var Query = /** @class */ (function () {
             for (var filterKey in copy.filters) {
                 var filter = copy.filters[filterKey];
                 copy.filters[filterKey].values = filter.values.map(function (value) {
-                    return value.replace(/\+/g, encodeURIComponent("+"));
+                    return typeof value === "string"
+                        ? value.replace(/\+/g, encodeURIComponent("+"))
+                        : value;
                 });
             }
         }

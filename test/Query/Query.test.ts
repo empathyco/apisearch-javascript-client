@@ -895,6 +895,14 @@ describe('Query()', () => {
             query = Query.createMatchAll().filterBy('a', 'a', ['A+B']);
             query = query.optimize();
             expect(query.getFilter('a').getValues()[0]).to.be.equal("A%2BB");
+
+            query = Query.createMatchAll().filterBy('Marca', 'brand', ['Huber+Suhner']);
+            query = query.optimize();
+            expect(query.getFilter('Marca').getValues()[0]).to.be.equal("Huber%2BSuhner");
+
+            query = Query.createMatchAll().filterBy("a", "a", [true]);
+            query = query.optimize();
+            expect(query.getFilter('a').getValues()[0]).to.be.equal(true);
         });
     });
 });
