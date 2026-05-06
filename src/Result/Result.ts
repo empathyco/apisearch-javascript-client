@@ -365,8 +365,14 @@ export class Result {
             ? array.subresults
             : {};
 
+        result.subresults = [];
         for (const i in subresultsAsArray) {
-            result.subresults[i] = Result.createFromArray(subresultsAsArray[i]);
+            if (Object.prototype.hasOwnProperty.call(subresultsAsArray, i)) {
+                const candidate = subresultsAsArray[i];
+                if (candidate && typeof candidate === 'object' && 'query_uuid' in candidate) {
+                    result.subresults[i] = Result.createFromArray(candidate);
+                }
+            }
         }
 
         return result;
